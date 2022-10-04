@@ -1,8 +1,23 @@
 <script lang="ts">
   import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-  import { onSnapshot, getDoc, doc, setDoc } from "firebase/firestore";
-  import { auth, db, User, userConverter } from "./firebase";
+  import {
+    onSnapshot,
+    getDoc,
+    doc,
+    setDoc,
+    collection,
+  } from "firebase/firestore";
+  import {
+    auth,
+    db,
+    Route,
+    routeConverter,
+    User,
+    userConverter,
+    type IRoute,
+  } from "./firebase";
   import { userStore } from "./stores";
+  import routeData from "./data/routes.json";
 
   let user = null;
 
@@ -10,10 +25,8 @@
     user = value;
   });
 
-  const unsubAuth = auth.onAuthStateChanged(async (user) => {
+  auth.onAuthStateChanged(async (user) => {
     if (user) {
-      console.log("user is signed in");
-      console.log(user);
       const loginUser = await getDoc(
         doc(db, "users", user.uid).withConverter(userConverter)
       );
@@ -33,17 +46,14 @@
         );
       }
     } else {
-      console.log("user is signed out");
       userStore.set(null);
     }
     getDoc(doc(db, "users", user.uid).withConverter(userConverter))
       .then((doc) => {
         if (doc.exists()) {
-          console.log("Document data:", doc.data());
           userStore.set(doc.data());
         } else {
           // doc.data() will be undefined in this case
-          console.log("No such document!");
         }
       })
       .catch((error) => {
@@ -55,6 +65,52 @@
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider);
   };
+
+  onSnapshot(
+    collection(db, "routes").withConverter(routeConverter),
+    (query) => {
+      query.forEach((doc) => {
+        console.log(doc.data());
+      });
+    }
+  );
+
+  const guid = () => {
+    const CHARS =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    let autoId = "";
+
+    for (let i = 0; i < 20; i++) {
+      autoId += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
+    }
+    return autoId;
+  };
+
+  let name = "";
+  let type = "";
+  let colorGrade = "";
+  let difficulty = -1;
+
+  const addRoute = () => {
+    const newRoute = new Route({
+      uid: guid(),
+      name: name,
+      type: type,
+      colorGrade: colorGrade,
+      difficulty: difficulty,
+      createdAt: new Date(),
+      createdBy: user.uid,
+    });
+    setDoc(
+      doc(db, "routes", newRoute.uid).withConverter(routeConverter),
+      newRoute
+    );
+    name = "";
+    type = "";
+    colorGrade = "";
+    difficulty = -1;
+  };
 </script>
 
 <div class="flex flex-col p-4 bg-gray-200 absolute inset-0 w-full">
@@ -63,17 +119,43 @@
       <div class="flex flex-col w-8 sm:w-10">
         <img class="rounded-full" src={user.photoUrl} alt="profile" />
       </div>
-      <div class="text-sm sm:text-lg">
-        <div class="flex  justify-between  space-x-1">
-          <div>Navn:</div>
-          <div>{user.name}</div>
-        </div>
-        <div class="flex justify-between space-x-8">
-          <div>Email:</div>
-          <div>{user.email}</div>
+    </div>
+    <form
+      class="flex flex-col w-full justify-center items-center space-y-2"
+      on:submit|preventDefault={addRoute}
+    >
+      <div>
+        <div class="flex flex-col font-bold">
+          <div>
+            <div class="capitalize">Name</div>
+            <input
+              class="px-2 py-1 text-sm w-full"
+              type="text"
+              bind:value={name}
+            />
+            <div>{name}</div>
+          </div>
+          <div>
+            <div class="capitalize">Type</div>
+            <input class="px-2 py-1" type="text" bind:value={type} />
+            <div>{type}</div>
+          </div>
+          <div>
+            <div class="capitalize">Color Grade</div>
+            <input class="px-2 py-1" type="text" bind:value={colorGrade} />
+            <div>{colorGrade}</div>
+          </div>
+          <div>
+            <div class="capitalize">Difficulty</div>
+            <input class="px-2 py-1" type="text" bind:value={difficulty} />
+            <div>{difficulty}</div>
+          </div>
         </div>
       </div>
-    </div>
+      <div>
+        <button type="submit"> Add Route </button>
+      </div>
+    </form>
   {:else}
     <button class="text-3xl" on:click={loginWithGooglePopUp}>Login!</button>
   {/if}
