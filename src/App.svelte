@@ -14,10 +14,8 @@
     routeConverter,
     User,
     userConverter,
-    type IRoute,
   } from "./firebase";
   import { userStore } from "./stores";
-  import routeData from "./data/routes.json";
 
   let user = null;
 
