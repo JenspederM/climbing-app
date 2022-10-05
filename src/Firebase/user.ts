@@ -5,7 +5,7 @@ import type {
   WithFieldValue,
 } from "firebase/firestore";
 
-interface IUser {
+export interface IUser {
   uid: string;
   name: string;
   email: string;
