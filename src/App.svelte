@@ -62,16 +62,14 @@
 <div class="absolute inset-0">
   <div class="flex flex-col w-full h-screen items-center">
     {#if user}
-      <div class="flex w-full justify-between items-center py-4 px-8">
+      <div class="flex w-full sm:w-2/3 justify-between items-center py-4 px-8">
         <div class="font-bold text-xl">Climbining App</div>
         <ProfileBar />
       </div>
-      <div class="w-full">
-        <div class="bg-green-400 h-6" />
-        <NewRoute class="py-2 px-4 text-center w-full font-bold" />
-        <div class="bg-green-400 h-6" />
+      <div class="flex w-full sm:w-2/3 items-center justify-center">
+        <NewRoute />
       </div>
-      <div class="overflow-auto w-full items-center">
+      <div class="overflow-auto w-full sm:w-2/3 items-center">
         <RouteList />
       </div>
     {:else}
