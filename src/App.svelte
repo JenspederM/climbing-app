@@ -7,14 +7,9 @@
     setDoc,
     collection,
   } from "firebase/firestore";
-  import {
-    auth,
-    db,
-    Route,
-    routeConverter,
-    User,
-    userConverter,
-  } from "./firebase";
+  import { auth, db } from "./Firebase";
+  import { User, userConverter } from "./Firebase/User";
+  import { Route, routeConverter } from "./Firebase/Route";
   import { userStore } from "./stores";
 
   let user = null;
