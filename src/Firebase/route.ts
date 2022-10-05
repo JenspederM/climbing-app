@@ -51,8 +51,9 @@ export class Route implements IRoute {
 export const routeConverter: FirestoreDataConverter<Route> = {
   toFirestore: (route: WithFieldValue<Route>) => {
     return {
-      name: route.name,
       uid: route.uid,
+      name: route.name,
+      type: route.type,
       colorGrade: route.colorGrade,
       difficulty: route.difficulty,
       createdAt: route.createdAt,

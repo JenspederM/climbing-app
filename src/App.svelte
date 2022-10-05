@@ -6,14 +6,7 @@
     onSnapshot,
     collection,
   } from "firebase/firestore";
-  import {
-    auth,
-    db,
-    Route,
-    routeConverter,
-    User,
-    userConverter,
-  } from "./Firebase";
+  import { auth, db, routeConverter, User, userConverter } from "./Firebase";
   import { routeStore, userStore } from "./stores";
   import ProfileBar from "./lib/Profile.svelte";
   import NewRoute from "./lib/NewRoute.svelte";
@@ -67,15 +60,18 @@
 </script>
 
 <div class="absolute inset-0">
-  <div class="flex flex-col w-full h-screen">
+  <div class="flex flex-col w-full h-screen items-center">
     {#if user}
-      <div class="flex justify-between items-center py-4 px-8">
+      <div class="flex w-full justify-between items-center py-4 px-8">
         <div class="font-bold text-xl">Climbining App</div>
         <ProfileBar />
       </div>
-      <div class="overflow-auto w-full">
+      <div class="w-full">
         <div class="bg-green-400 h-6" />
-        <NewRoute class="py-2 px-4  w-full sm:w-1/3  text-center" />
+        <NewRoute class="py-2 px-4 text-center w-full font-bold" />
+        <div class="bg-green-400 h-6" />
+      </div>
+      <div class="overflow-auto w-full items-center">
         <RouteList />
       </div>
     {:else}

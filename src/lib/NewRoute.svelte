@@ -8,7 +8,7 @@
 
   let createNewRoute = false;
   let name = "";
-  let type = "";
+  let routeType = "";
   let colorGrade = "";
   let difficulty = -1;
 
@@ -36,7 +36,7 @@
     const newRoute = new Route({
       uid: guid(),
       name: name,
-      type: type,
+      type: routeType,
       colorGrade: colorGrade,
       difficulty: difficulty,
       createdAt: new Date(),
@@ -47,9 +47,10 @@
       newRoute
     );
     name = "";
-    type = "";
+    routeType = "";
     colorGrade = "";
     difficulty = -1;
+    createNewRoute = false;
   };
 </script>
 
@@ -74,7 +75,7 @@
         </div>
         <div>
           <div class="capitalize bg-green-200 px-2 py-1">Type</div>
-          <input class="px-2 py-1" type="text" bind:value={type} />
+          <input class="px-2 py-1" type="text" bind:value={routeType} />
         </div>
         <div>
           <div class="capitalize bg-green-200 px-2 py-1">Color Grade</div>
