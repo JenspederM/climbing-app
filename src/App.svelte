@@ -59,21 +59,19 @@
   });
 </script>
 
-<div class="absolute inset-0">
-  <div class="flex flex-col w-full h-screen items-center">
-    {#if user}
-      <div class="flex w-full sm:w-2/3 justify-between items-center py-4 px-8">
-        <div class="font-bold text-xl">Climbining App</div>
-        <ProfileBar />
-      </div>
-      <div class="flex w-full sm:w-2/3 items-center justify-center">
-        <NewRoute />
-      </div>
-      <div class="overflow-auto w-full sm:w-2/3 items-center">
-        <RouteList />
-      </div>
-    {:else}
-      <Login />
-    {/if}
-  </div>
+<div class="flex flex-col w-full items-center absolute inset-0">
+  {#if user}
+    <div class="flex w-full sm:w-2/3 justify-between items-center py-4 px-8">
+      <div class="font-bold text-xl">Climbining App</div>
+      <ProfileBar />
+    </div>
+    <div class="flex w-full sm:w-2/3 items-center justify-center">
+      <NewRoute />
+    </div>
+    <div class="overflow-auto w-full sm:w-2/3 items-center">
+      <RouteList />
+    </div>
+  {:else}
+    <Login />
+  {/if}
 </div>
