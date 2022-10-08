@@ -13,7 +13,7 @@ import { Route, routeConverter } from "./route";
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY || "",
   authDomain: import.meta.env.VITE_AUTH_DOAMIN || "",
-  projectId: import.meta.env.VITE_PROJECT_ID || "",
+  projectId: import.meta.env.VITE_PROJECT_ID || "climbing-app-9a84a",
   storageBucket: import.meta.env.STORAGE_BUCKET || "",
   messagingSenderId: import.meta.env.MESSAGING_SENDER_ID || "",
   appId: import.meta.env.VITE_APP_ID || "",
