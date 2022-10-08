@@ -20,3 +20,5 @@ export const GRIP_TYPES = [
   "Horn",
   "Other",
 ];
+
+export const ROUTE_TYPES = ["Static", "Dynamic", "Boulder"];

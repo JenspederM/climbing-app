@@ -3,18 +3,25 @@
   import { db, Route, routeConverter } from "../Firebase";
   import { userStore } from "../stores";
   import { slide } from "svelte/transition";
-  import { COLOR_MAP, GRIP_TYPES as ROUTE_TYPES } from "../constants";
+  import {
+    COLOR_MAP,
+    GRIP_TYPES,
+    ROUTE_TYPES as ROUTE_TYPES,
+  } from "../constants";
+  import { guid, toTitleCase } from "../utils";
 
   let user;
 
   let createNewRoute = false;
   let name;
   let difficulty;
+  let gripType;
   let routeType;
   let colorGrade;
 
   const colorGrades = Object.keys(COLOR_MAP);
   const routeTypes = ROUTE_TYPES;
+  const gripTypes = GRIP_TYPES;
 
   userStore.subscribe((value) => {
     user = value;
@@ -24,29 +31,12 @@
     createNewRoute = !createNewRoute;
   };
 
-  const guid = () => {
-    const CHARS =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    let autoId = "";
-
-    for (let i = 0; i < 20; i++) {
-      autoId += CHARS.charAt(Math.floor(Math.random() * CHARS.length));
-    }
-    return autoId;
-  };
-
-  function toTitleCase(str: String): String {
-    return str.replace(/\w\S*/g, function (txt) {
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-  }
-
   const addRoute = () => {
     const newRoute = new Route({
       uid: guid(),
       name: name,
-      type: routeType,
+      routeType: routeType,
+      gripType: gripType,
       colorGrade: colorGrade,
       difficulty: difficulty,
       createdAt: new Date(),
@@ -60,6 +50,7 @@
     difficulty = null;
     colorGrade = colorGrades[0];
     routeType = routeTypes[0];
+    gripType = routeTypes[0];
     createNewRoute = false;
   };
 
@@ -69,7 +60,7 @@
 <div class="w-full">
   <button
     on:click={toggleNewRoute}
-    class="text-xl lg:text-2xl py-6 px-4 w-full {buttonBg}"
+    class="text-xl text-white lg:text-2xl py-6 px-4 w-full {buttonBg}"
   >
     {!createNewRoute ? "New Route" : "Cancel"}
   </button>
@@ -99,15 +90,28 @@
             />
           </div>
           <div>
-            <div class="capitalize bg-green-300 px-2 py-1">Type</div>
+            <div class="capitalize bg-green-300 px-2 py-1">Route Type</div>
             <select
               class="w-full font-light text-sm px-2 py-1"
               bind:value={routeType}
-              name="grips"
-              id="grips"
+              name="routes"
+              id="routes"
             >
               {#each routeTypes as _routeType}
                 <option value={_routeType}>{toTitleCase(_routeType)}</option>
+              {/each}
+            </select>
+          </div>
+          <div>
+            <div class="capitalize bg-green-300 px-2 py-1">Grip Type</div>
+            <select
+              class="w-full font-light text-sm px-2 py-1"
+              bind:value={gripType}
+              name="grips"
+              id="grips"
+            >
+              {#each gripTypes as _gripType}
+                <option value={_gripType}>{toTitleCase(_gripType)}</option>
               {/each}
             </select>
           </div>

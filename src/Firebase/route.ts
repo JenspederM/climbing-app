@@ -8,7 +8,8 @@ import type {
 export interface IRoute {
   uid: string;
   name: string;
-  type: string;
+  routeType: string;
+  gripType: string;
   colorGrade: string;
   difficulty: number;
   createdAt: Date;
@@ -18,7 +19,8 @@ export interface IRoute {
 export class Route implements IRoute {
   uid: string;
   name: string;
-  type: string;
+  routeType: string;
+  gripType: string;
   colorGrade: string;
   difficulty: number;
   createdAt: Date;
@@ -27,7 +29,8 @@ export class Route implements IRoute {
   constructor({
     name,
     uid,
-    type,
+    routeType,
+    gripType,
     colorGrade,
     difficulty,
     createdAt,
@@ -35,7 +38,8 @@ export class Route implements IRoute {
   }: IRoute) {
     this.uid = uid;
     this.name = name;
-    this.type = type;
+    this.routeType = routeType;
+    this.gripType = gripType;
     this.colorGrade = colorGrade;
     this.difficulty = difficulty;
     if (createdAt instanceof Date) {
@@ -53,7 +57,8 @@ export const routeConverter: FirestoreDataConverter<Route> = {
     return {
       uid: route.uid,
       name: route.name,
-      type: route.type,
+      routeType: route.routeType,
+      gripType: route.gripType,
       colorGrade: route.colorGrade,
       difficulty: route.difficulty,
       createdAt: route.createdAt,
