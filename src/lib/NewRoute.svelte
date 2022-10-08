@@ -3,14 +3,18 @@
   import { db, Route, routeConverter } from "../Firebase";
   import { userStore } from "../stores";
   import { slide } from "svelte/transition";
+  import { COLOR_MAP, GRIP_TYPES as ROUTE_TYPES } from "../constants";
 
   let user;
 
   let createNewRoute = false;
   let name;
+  let difficulty;
   let routeType;
   let colorGrade;
-  let difficulty;
+
+  const colorGrades = Object.keys(COLOR_MAP);
+  const routeTypes = ROUTE_TYPES;
 
   userStore.subscribe((value) => {
     user = value;
@@ -32,6 +36,12 @@
     return autoId;
   };
 
+  function toTitleCase(str: String): String {
+    return str.replace(/\w\S*/g, function (txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+  }
+
   const addRoute = () => {
     const newRoute = new Route({
       uid: guid(),
@@ -47,9 +57,9 @@
       newRoute
     );
     name = null;
-    routeType = null;
-    colorGrade = null;
     difficulty = null;
+    colorGrade = colorGrades[0];
+    routeType = routeTypes[0];
     createNewRoute = false;
   };
 
@@ -73,38 +83,46 @@
           <div class="">
             <div class="capitalize bg-green-300 px-2 py-1">Name</div>
             <input
-              class="px-2 py-1 text-sm w-full"
+              class="px-2 py-1 font-light text-sm w-full"
               type="text"
               placeholder="Route Name"
               bind:value={name}
             />
           </div>
           <div>
-            <div class="capitalize bg-green-300 px-2 py-1">Type</div>
-            <input
-              class="px-2 py-1"
-              type="text"
-              placeholder="Sloper"
-              bind:value={routeType}
-            />
-          </div>
-          <div>
-            <div class="capitalize bg-green-300 px-2 py-1">Color Grade</div>
-            <input
-              class="px-2 py-1"
-              type="text"
-              placeholder="Blue"
-              bind:value={colorGrade}
-            />
-          </div>
-          <div>
             <div class="capitalize bg-green-300 px-2 py-1">Difficulty</div>
             <input
-              class="px-2 py-1"
+              class="w-full font-light px-2 py-1"
               type="text"
               placeholder="4"
               bind:value={difficulty}
             />
+          </div>
+          <div>
+            <div class="capitalize bg-green-300 px-2 py-1">Type</div>
+            <select
+              class="w-full font-light text-sm px-2 py-1"
+              bind:value={routeType}
+              name="grips"
+              id="grips"
+            >
+              {#each routeTypes as _routeType}
+                <option value={_routeType}>{toTitleCase(_routeType)}</option>
+              {/each}
+            </select>
+          </div>
+          <div>
+            <div class="capitalize bg-green-300 px-2 py-1">Color Grade</div>
+            <select
+              class="w-full font-light text-sm px-2 py-1"
+              bind:value={colorGrade}
+              name="colors"
+              id="colors"
+            >
+              {#each colorGrades as color}
+                <option value={color}>{toTitleCase(color)}</option>
+              {/each}
+            </select>
           </div>
         </div>
         <div class="bg-green-400 py-2 px-4 rounded-xl text-white text-center">

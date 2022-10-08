@@ -6,17 +6,10 @@
     faPersonThroughWindow,
     faPersonFalling,
   } from "@fortawesome/free-solid-svg-icons";
+  import { COLOR_MAP } from "../constants";
   let userRoutes: Array<Route> = [];
 
-  const colorMap = {
-    red: "bg-red-400",
-    orange: "bg-orange-400",
-    yellow: "bg-yellow-400",
-    green: "bg-green-400",
-    blue: "bg-blue-400",
-    purple: "bg-purple-400",
-    pink: "bg-pink-400",
-  };
+  const colorMap = COLOR_MAP;
 
   routeStore.subscribe((value) => {
     userRoutes = value;
@@ -25,9 +18,9 @@
   const getColor = (color: string) => {
     const lowerColor = color.toLowerCase();
     if (lowerColor in colorMap) {
-      return colorMap[lowerColor];
+      return colorMap[lowerColor].background;
     } else {
-      return colorMap["white"];
+      return "bg-white";
     }
   };
 </script>
