@@ -11,13 +11,13 @@ import { Route, routeConverter } from "./route";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_KEY || "",
-  authDomain: import.meta.env.VITE_AUTH_DOAMIN || "",
-  projectId: import.meta.env.VITE_PROJECT_ID || "climbing-app-9a84a",
-  storageBucket: import.meta.env.STORAGE_BUCKET || "",
-  messagingSenderId: import.meta.env.MESSAGING_SENDER_ID || "",
-  appId: import.meta.env.VITE_APP_ID || "",
-  measurementId: import.meta.env.MEASUREMENT_ID || "",
+  apiKey: "AIzaSyCFgQIDxv42OHPIIwOAabFrwb8J7FDxQYg",
+  authDomain: "climbing-app-9a84a.firebaseapp.com",
+  projectId: "climbing-app-9a84a",
+  storageBucket: "climbing-app-9a84a.appspot.com",
+  messagingSenderId: "257482866336",
+  appId: "1:257482866336:web:c11cd33965f46f0235d3c5",
+  measurementId: "G-1DBK8FJ4F9",
 };
 
 // Initialize Firebase
