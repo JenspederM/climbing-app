@@ -2,7 +2,10 @@
   import type { Route } from "../Firebase";
   import { routeStore } from "../stores";
   import Fa from "svelte-fa/src/fa.svelte";
-  import { faPersonFalling } from "@fortawesome/free-solid-svg-icons";
+  import {
+    faPersonFalling,
+    faPlusCircle,
+  } from "@fortawesome/free-solid-svg-icons";
   import { COLOR_MAP } from "../constants";
   import { toTitleCase } from "../utils";
   export let userRoutes: Array<Route> = [];
@@ -78,7 +81,7 @@
 </script>
 
 <div class="flex flex-col space-y-2 justify-center items-center">
-  <div class="flex w-full p-4 items-center">
+  <div class="flex w-full space-x-4 p-4 items-center">
     <div class="w-1/2">
       <label
         for="types"
