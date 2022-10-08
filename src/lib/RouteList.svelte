@@ -3,22 +3,29 @@
   import { routeStore } from "../stores";
   import Fa from "svelte-fa/src/fa.svelte";
   import {
+    faFilter,
     faPersonFalling,
     faPlusCircle,
   } from "@fortawesome/free-solid-svg-icons";
   import { COLOR_MAP } from "../constants";
   import { toTitleCase } from "../utils";
+  import { slide } from "svelte/transition";
   export let userRoutes: Array<Route> = [];
 
-  let routeType;
-  let gripType;
-  let colorGrade;
+  let routeType = "All";
+  let gripType = "All";
+  let colorGrade = "All";
+  let showFilters = false;
 
   const colorMap = COLOR_MAP;
 
   routeStore.subscribe((value) => {
     userRoutes = value;
   });
+
+  const toggleShowFilters = () => {
+    showFilters = !showFilters;
+  };
 
   const getColor = (color: string) => {
     const lowerColor = color.toLowerCase();
@@ -81,63 +88,86 @@
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 </script>
 
-<div class="flex flex-col space-y-2 justify-center items-center">
-  <div class="flex w-full space-x-4 p-4 items-center">
-    <div class="w-1/2">
-      <label
-        for="types"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-      >
-        Grip Type
-      </label>
-      <select
-        class="w-full font-light text-sm px-2 py-1"
-        bind:value={gripType}
-        name="types"
-        id="types"
-      >
-        {#each gripTypes as _gripType}
-          <option value={_gripType}>{_gripType}</option>
-        {/each}
-      </select>
+<!-- ################ -->
+<!--   Route Filter   -->
+<!-- ################ -->
+<div class="w-full sm:w-2/3">
+  <button
+    class="flex items-center justify-center text-xs bg-yellow-400 w-full px-2 py-2 text-white font-bold"
+    on:click={toggleShowFilters}
+  >
+    <div>
+      <Fa icon={faFilter} class="mr-2" />
     </div>
-    <div class="w-1/2">
-      <label
-        for="types"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-      >
-        Route Type
-      </label>
-      <select
-        class="w-full font-light text-sm px-2 py-1"
-        bind:value={routeType}
-        name="types"
-        id="types"
-      >
-        {#each routeTypes as _routeType}
-          <option value={_routeType}>{_routeType}</option>
-        {/each}
-      </select>
+    <div>Filter</div>
+  </button>
+
+  {#if showFilters}
+    <div>
+      <div transition:slide class="flex w-full space-x-4 p-4 items-center">
+        <div class="w-1/2">
+          <label
+            for="types"
+            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-400"
+          >
+            Grip Type
+          </label>
+          <select
+            class="w-full font-light text-xs px-2 py-1"
+            bind:value={gripType}
+            name="types"
+            id="types"
+          >
+            {#each gripTypes as _gripType}
+              <option value={_gripType}>{_gripType}</option>
+            {/each}
+          </select>
+        </div>
+        <div class="w-1/2">
+          <label
+            for="types"
+            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-400"
+          >
+            Route Type
+          </label>
+          <select
+            class="w-full font-light text-xs px-2 py-1"
+            bind:value={routeType}
+            name="types"
+            id="types"
+          >
+            {#each routeTypes as _routeType}
+              <option value={_routeType}>{_routeType}</option>
+            {/each}
+          </select>
+        </div>
+        <div class="w-1/2">
+          <label
+            for="colors"
+            class="block mb-2 text-xs font-medium text-gray-900 dark:text-gray-400"
+          >
+            Color Grade
+          </label>
+          <select
+            class="w-full font-light text-xs px-2 py-1"
+            bind:value={colorGrade}
+            name="colors"
+            id="colors"
+          >
+            {#each colorGrades as _colorGrade}
+              <option value={_colorGrade}>{_colorGrade}</option>
+            {/each}
+          </select>
+        </div>
+      </div>
     </div>
-    <div class="w-1/2">
-      <label
-        for="colors"
-        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-      >
-        Color Grade
-      </label>
-      <select
-        class="w-full font-light text-sm px-2 py-1"
-        bind:value={colorGrade}
-        name="colors"
-        id="colors"
-      >
-        {#each colorGrades as _colorGrade}
-          <option value={_colorGrade}>{_colorGrade}</option>
-        {/each}
-      </select>
-    </div>
-  </div>
+  {/if}
+</div>
+<!-- ############## -->
+<!--   Route List   -->
+<!-- ############## -->
+
+<div class="overflow-auto w-full sm:w-2/3 items-center">
   {#each filteredRoutes as route}
     <div class="flex w-full sm:rounded-xl px-4 py-2">
       <div class="flex flex-col items-start justify-center w-2/3 text-sm">

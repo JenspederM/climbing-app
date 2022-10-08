@@ -60,7 +60,7 @@
 <div class="w-full">
   <button
     on:click={toggleNewRoute}
-    class="text-xl text-white lg:text-2xl py-6 px-4 w-full {buttonBg}"
+    class="text-xs text-white lg:text-2xl py-2 px-4 w-full font-bold {buttonBg}"
   >
     {!createNewRoute ? "New Route" : "Cancel"}
   </button>

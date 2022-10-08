@@ -68,9 +68,7 @@
     <div class="flex w-full sm:w-2/3 items-center justify-center">
       <NewRoute />
     </div>
-    <div class="overflow-auto w-full sm:w-2/3 items-center">
-      <RouteList />
-    </div>
+    <RouteList />
   {:else}
     <Login />
   {/if}
