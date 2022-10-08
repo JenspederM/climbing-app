@@ -52,6 +52,7 @@
   };
 
   const filterColors = (route) => {
+    console.log(`Selected color grade: ${gripType}`);
     if (colorGrade === "All") {
       return true;
     } else if (colorGrade) {
