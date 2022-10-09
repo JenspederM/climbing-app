@@ -2,11 +2,7 @@
   import type { Route } from "../Firebase";
   import { routeStore } from "../stores";
   import Fa from "svelte-fa/src/fa.svelte";
-  import {
-    faFilter,
-    faPersonFalling,
-    faPlusCircle,
-  } from "@fortawesome/free-solid-svg-icons";
+  import { faFilter, faPersonFalling } from "@fortawesome/free-solid-svg-icons";
   import { COLOR_MAP } from "../constants";
   import { toTitleCase } from "../utils";
   import { slide } from "svelte/transition";

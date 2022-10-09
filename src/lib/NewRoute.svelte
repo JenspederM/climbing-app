@@ -3,11 +3,7 @@
   import { db, Route, routeConverter } from "../Firebase";
   import { userStore } from "../stores";
   import { slide } from "svelte/transition";
-  import {
-    COLOR_MAP,
-    GRIP_TYPES,
-    ROUTE_TYPES as ROUTE_TYPES,
-  } from "../constants";
+  import { COLOR_MAP, GRIP_TYPES, ROUTE_TYPES } from "../constants";
   import { guid, toTitleCase } from "../utils";
 
   let user;
