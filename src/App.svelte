@@ -59,7 +59,7 @@
   });
 </script>
 
-<div class="flex flex-col w-full items-center absolute inset-0">
+<div class="flex bg-gray-200 flex-col w-full items-center absolute inset-0">
   {#if user}
     <div class="flex w-full sm:w-2/3 justify-between items-center py-4 px-8">
       <div class="font-bold text-xl">Climbining App</div>
