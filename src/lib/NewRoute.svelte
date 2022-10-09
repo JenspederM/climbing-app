@@ -63,7 +63,7 @@
   {#if createNewRoute}
     <div
       transition:slide
-      class="flex flex-col w-full justify-center items-center py-3"
+      class="flex flex-col w-full justify-center items-center py-3 text-xs"
     >
       <form on:submit|preventDefault={addRoute}>
         <div class="flex flex-col font-bold space-y-2 py-2">
@@ -88,7 +88,7 @@
           <div>
             <div class="capitalize bg-green-300 px-2 py-1">Route Type</div>
             <select
-              class="w-full font-light text-sm px-2 py-1"
+              class="w-full font-light px-2 py-1"
               bind:value={routeType}
               name="routes"
               id="routes"
@@ -101,7 +101,7 @@
           <div>
             <div class="capitalize bg-green-300 px-2 py-1">Grip Type</div>
             <select
-              class="w-full font-light text-sm px-2 py-1"
+              class="w-full font-light px-2 py-1"
               bind:value={gripType}
               name="grips"
               id="grips"
@@ -114,7 +114,7 @@
           <div>
             <div class="capitalize bg-green-300 px-2 py-1">Color Grade</div>
             <select
-              class="w-full font-light text-sm px-2 py-1"
+              class="w-full font-light px-2 py-1"
               bind:value={colorGrade}
               name="colors"
               id="colors"
@@ -125,8 +125,8 @@
             </select>
           </div>
         </div>
-        <div class="bg-green-400 py-2 px-4 rounded-xl text-white text-center">
-          <button class="text-xl font-bold" type="submit"> Add Route </button>
+        <div class="bg-green-400 py-2 px-4 rounded-sm text-white text-center">
+          <button class="text-md font-bold" type="submit"> Add Route </button>
         </div>
       </form>
     </div>
