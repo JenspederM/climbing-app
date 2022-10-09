@@ -5,6 +5,7 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { User, userConverter } from "./user";
 import { Route, routeConverter } from "./route";
+import { Session, sessionConverter } from "./session";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,4 +26,11 @@ const app = initializeApp(firebaseConfig);
 export const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
-export { User, Route, userConverter, routeConverter };
+export {
+  User,
+  Route,
+  userConverter,
+  routeConverter,
+  Session,
+  sessionConverter,
+};
