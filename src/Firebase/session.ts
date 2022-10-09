@@ -9,25 +9,20 @@ import type { Route } from "./route";
 export interface ISession {
   uid: string;
   userUid: string;
-  date: Date;
+  date: string;
   routes: Route[];
 }
 
 export class Session implements ISession {
   uid: string;
   userUid: string;
-  date: Date;
+  date: string;
   routes: Route[];
 
   constructor({ uid, userUid, date, routes }: ISession) {
     this.uid = uid;
     this.userUid = userUid;
-    if (date instanceof Date) {
-      this.date = date;
-    } else {
-      const _date = date as Timestamp;
-      this.date = _date.toDate();
-    }
+    this.date = date;
     this.routes = routes;
   }
 }
