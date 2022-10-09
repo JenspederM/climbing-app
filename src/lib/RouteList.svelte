@@ -170,13 +170,11 @@
 <div class="overflow-auto w-full sm:w-2/3 items-center">
   {#each filteredRoutes as route}
     <div class="flex w-full sm:rounded-xl px-4 py-2">
-      <div class="flex flex-col items-start justify-center w-2/3 text-sm">
+      <div class="flex flex-col items-start justify-center w-2/3 text-xs">
         <div class="capitalize">Name: {route.name}</div>
-        <div class="capitalize">Route Type: {route.routeType}</div>
-        <div class="capitalize">Grip Type: {route.gripType}</div>
-        <div class="capitalize">
-          Color Grade: {route.colorGrade}
-        </div>
+        <div>Route Type: {route.routeType}</div>
+        <div>Grip Type: {route.gripType}</div>
+        <div class="capitalize">Color Grade: {route.colorGrade}</div>
         <div class="capitalize">Difficulty: {route.difficulty}</div>
       </div>
       <div class="flex flex-col items-center justify-center w-1/3">
