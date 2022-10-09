@@ -3,8 +3,7 @@
   import { routeStore } from "../stores";
   import Fa from "svelte-fa/src/fa.svelte";
   import { faFilter, faPersonFalling } from "@fortawesome/free-solid-svg-icons";
-  import { COLOR_MAP } from "../constants";
-  import { toTitleCase } from "../utils";
+  import { toTitleCase, getColor } from "../utils";
   import { slide } from "svelte/transition";
   export let userRoutes: Array<Route> = [];
 
@@ -13,23 +12,12 @@
   let colorGrade = "All";
   let showFilters = false;
 
-  const colorMap = COLOR_MAP;
-
   routeStore.subscribe((value) => {
     userRoutes = value;
   });
 
   const toggleShowFilters = () => {
     showFilters = !showFilters;
-  };
-
-  const getColor = (color: string) => {
-    const lowerColor = color.toLowerCase();
-    if (lowerColor in colorMap) {
-      return colorMap[lowerColor].background;
-    } else {
-      return "bg-white";
-    }
   };
 
   const filterRoutes = (route) => {
@@ -174,13 +162,13 @@
         <div class="capitalize">Difficulty: {route.difficulty}</div>
       </div>
       <div class="flex flex-col items-center justify-center w-1/3">
-        <div
+        <button
           class="flex flex-row overflow-y-visible space-x-4 items-center justify-center w-2/3 h-3/4 text-3xl text-white {getColor(
             route.colorGrade
           )}"
         >
           <Fa icon={faPersonFalling} />
-        </div>
+        </button>
       </div>
     </div>
   {/each}
