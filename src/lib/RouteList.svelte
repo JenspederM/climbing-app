@@ -1,12 +1,20 @@
 <script lang="ts">
-  import type { Route } from "../Firebase";
-  import { routeStore } from "../stores";
+  import { db, type Route, type Session } from "../Firebase";
+  import { routeStore, sessionStore } from "../stores";
   import Fa from "svelte-fa/src/fa.svelte";
-  import { faFilter, faPersonFalling } from "@fortawesome/free-solid-svg-icons";
+  import {
+    faCheckCircle,
+    faFilter,
+    faPlusCircle,
+    faTimesCircle,
+  } from "@fortawesome/free-solid-svg-icons";
   import { toTitleCase, getColor } from "../utils";
   import { slide } from "svelte/transition";
-  export let userRoutes: Array<Route> = [];
+  import { arrayUnion, doc, increment, updateDoc } from "firebase/firestore";
 
+  let userSession: Session;
+  let userRoutes: Array<Route> = [];
+  let routeValidator = 0;
   let routeType = "All";
   let gripType = "All";
   let colorGrade = "All";
@@ -16,8 +24,23 @@
     userRoutes = value;
   });
 
+  sessionStore.subscribe((value) => {
+    userSession = value;
+  });
+
   const toggleShowFilters = () => {
     showFilters = !showFilters;
+  };
+
+  const addRouteToSession = async (route: Route) => {
+    if (routeValidator == 1) {
+      await updateDoc(doc(db, "sessions", userSession.uid), {
+        routes: arrayUnion({ ...route, climbedAt: new Date() }),
+      });
+      routeValidator = 0;
+    } else {
+      routeValidator++;
+    }
   };
 
   const filterRoutes = (route) => {
@@ -147,28 +170,59 @@
     </div>
   {/if}
 </div>
+
 <!-- ############## -->
 <!--   Route List   -->
 <!-- ############## -->
-
-<div class="overflow-auto w-full sm:w-2/3 items-center">
+<div class="overflow-auto w-full sm:w-2/3 items-center pb-2">
   {#each filteredRoutes as route}
-    <div class="flex w-full sm:rounded-xl px-4 py-2">
-      <div class="flex flex-col items-start justify-center w-2/3 text-xs">
-        <div class="capitalize">Name: {route.name}</div>
-        <div>Route Type: {route.routeType}</div>
-        <div>Grip Type: {route.gripType}</div>
-        <div class="capitalize">Color Grade: {route.colorGrade}</div>
-        <div class="capitalize">Difficulty: {route.difficulty}</div>
-      </div>
-      <div class="flex flex-col items-center justify-center w-1/3">
-        <button
-          class="flex flex-row overflow-y-visible space-x-4 items-center justify-center w-2/3 h-3/4 text-3xl text-white {getColor(
-            route.colorGrade
-          )}"
-        >
-          <Fa icon={faPersonFalling} />
-        </button>
+    <div class="flex flex-col w-full sm:rounded-xl pt-2">
+      <div
+        class="flex flex-col rounded-xl px-4 py-2 mx-4 {getColor(
+          route.colorGrade
+        )}"
+      >
+        <div class="flex items-center justify-between w-full border-b-2">
+          <div class="text-lg md:text-xl font-bold capitalize">
+            {route.name}
+          </div>
+          {#if routeValidator === 0}
+            <button
+              class="text-xl py-2 px-6"
+              on:click={() => addRouteToSession(route)}
+            >
+              <Fa icon={faPlusCircle} />
+            </button>
+          {:else if routeValidator === 1}
+            <div class="flex space-x-2 py-2 px-6">
+              <button
+                class="text-xl"
+                on:click={() => {
+                  routeValidator = 0;
+                }}
+              >
+                <Fa icon={faTimesCircle} />
+              </button>
+              <button class="text-xl" on:click={() => addRouteToSession(route)}>
+                <Fa icon={faCheckCircle} />
+              </button>
+            </div>
+          {:else}
+            <button
+              class="text-xl py-2 px-6"
+              on:click={() => addRouteToSession(route)}
+            >
+              <Fa icon={faTimesCircle} />
+            </button>
+          {/if}
+        </div>
+        <div class="flex justify-between">
+          <div class="flex space-x-2">
+            <div>{route.routeType}</div>
+            <div>{route.gripType}</div>
+          </div>
+          <div class="capitalize">Difficulty: {route.difficulty}</div>
+        </div>
       </div>
     </div>
   {/each}

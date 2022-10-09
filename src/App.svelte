@@ -27,9 +27,14 @@
   import { guid } from "./utils";
 
   let user = null;
+  let userSession: Session = null;
 
   userStore.subscribe((value) => {
     user = value;
+  });
+
+  sessionStore.subscribe((value) => {
+    userSession = value;
   });
 
   const sessionUnsub = onSnapshot(
@@ -110,7 +115,7 @@
       }
 
       console.log("Sessions: ", sessions);
-
+      sessionStore.set(sessions[0]);
       userStore.set(newUser);
     } else {
       userStore.set(null);
@@ -125,6 +130,13 @@
   );
 
   onDestroy(() => {
+    if (userSession) {
+      console.log(`Saving app session ${userSession}`);
+      setDoc(
+        doc(db, "sessions", userSession.uid).withConverter(sessionConverter),
+        userSession
+      );
+    }
     authUnsub();
     routeUnsub();
     sessionUnsub();
@@ -134,7 +146,7 @@
 <div class="flex bg-gray-200 flex-col w-full items-center absolute inset-0">
   {#if user}
     <div class="flex w-full sm:w-2/3 justify-between items-center py-4 px-8">
-      <div class="font-bold text-2xl sm:text-3xl font-['Lobster']">Climb</div>
+      <div class="font-bold text-3xl sm:text-4xl font-['Lobster']">Climb</div>
       <ProfileBar />
     </div>
     <div class="flex w-full sm:w-2/3 items-center justify-center">

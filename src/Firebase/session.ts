@@ -29,6 +29,7 @@ export class Session implements ISession {
 
 export const sessionConverter: FirestoreDataConverter<Session> = {
   toFirestore: (session: WithFieldValue<Session>) => {
+    console.log(`session.toFirestore: ${JSON.stringify(session)}`);
     return {
       uid: session.uid,
       userUid: session.userUid,

@@ -1,5 +1,5 @@
 const _BUTTON_BACKGROUND = (color) => {
-  return `bg-${color}-400 hover:bg-${color}-600 active:bg-${color}-700 focus:outline-none focus:ring focus:ring-${color}-600`;
+  return `text-white bg-${color}-400 hover:bg-${color}-600 active:bg-${color}-700 focus:outline-none focus:ring focus:ring-${color}-600`;
 };
 
 export const COLOR_MAP = {
@@ -29,7 +29,7 @@ export const COLOR_MAP = {
   },
   black: {
     background:
-      "bg-gray-700 hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:ring focus:ring-gray-800",
+      "text-white bg-gray-700 hover:bg-gray-800 active:bg-gray-900 focus:outline-none focus:ring focus:ring-gray-800",
     grade: 7,
   },
   pink: {
