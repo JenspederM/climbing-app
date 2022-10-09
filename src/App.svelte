@@ -5,14 +5,26 @@
     setDoc,
     onSnapshot,
     collection,
+    getDocs,
+    query,
+    where,
   } from "firebase/firestore";
-  import { auth, db, routeConverter, User, userConverter } from "./Firebase";
-  import { routeStore, userStore } from "./stores";
+  import {
+    auth,
+    db,
+    Session,
+    routeConverter,
+    sessionConverter,
+    User,
+    userConverter,
+  } from "./Firebase";
+  import { routeStore, sessionStore, userStore } from "./stores";
   import ProfileBar from "./lib/Profile.svelte";
   import NewRoute from "./lib/NewRoute.svelte";
   import Login from "./lib/Login.svelte";
   import { onDestroy } from "svelte";
   import RouteList from "./lib/RouteList.svelte";
+  import { guid } from "./utils";
 
   let user = null;
 
@@ -20,27 +32,86 @@
     user = value;
   });
 
+  const sessionUnsub = onSnapshot(
+    collection(db, "sessions").withConverter(sessionConverter),
+    (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          if (user) {
+            console.log("user session");
+          }
+          // console.log("New session: ", change.doc.data());
+        }
+        if (change.type === "modified") {
+          console.log("Modified session: ", change.doc.data());
+        }
+        if (change.type === "removed") {
+          console.log("Removed session: ", change.doc.data());
+        }
+      });
+    }
+  );
+
   const authUnsub = auth.onAuthStateChanged(async (user) => {
     if (user) {
       const loginUser = await getDoc(
         doc(db, "users", user.uid).withConverter(userConverter)
       );
+
+      let newUser;
+
       if (loginUser.exists()) {
-        userStore.set(loginUser.data());
+        newUser = loginUser.data();
       } else {
-        const newUser = new User({
+        newUser = new User({
           uid: user.uid,
           name: user.displayName,
           email: user.email,
           photoUrl: user.photoURL,
           createdAt: new Date(),
         });
+
         setDoc(
           doc(db, "users", user.uid).withConverter(userConverter),
           newUser
         );
-        userStore.set(newUser);
       }
+
+      const today = new Date().toDateString();
+
+      const sessionsQuery = await getDocs(
+        query(
+          collection(db, "sessions").withConverter(sessionConverter),
+          where("userUid", "==", user.uid),
+          where("date", "==", today)
+        )
+      );
+
+      let sessions = [];
+
+      sessionsQuery.forEach((session) => {
+        sessions.push(session.data());
+      });
+
+      if (sessions.length === 0) {
+        const newSession = new Session({
+          uid: guid(),
+          userUid: user.uid,
+          date: today,
+          routes: [],
+        });
+
+        setDoc(
+          doc(db, "sessions", newSession.uid).withConverter(sessionConverter),
+          newSession
+        );
+
+        sessions.push(newSession);
+      }
+
+      console.log("Sessions: ", sessions);
+
+      userStore.set(newUser);
     } else {
       userStore.set(null);
     }
@@ -56,13 +127,14 @@
   onDestroy(() => {
     authUnsub();
     routeUnsub();
+    sessionUnsub();
   });
 </script>
 
 <div class="flex bg-gray-200 flex-col w-full items-center absolute inset-0">
   {#if user}
     <div class="flex w-full sm:w-2/3 justify-between items-center py-4 px-8">
-      <div class="font-bold text-xl">Climbining App</div>
+      <div class="font-bold text-2xl sm:text-3xl font-['Lobster']">Climb</div>
       <ProfileBar />
     </div>
     <div class="flex w-full sm:w-2/3 items-center justify-center">
