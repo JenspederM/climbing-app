@@ -25,6 +25,7 @@
   import { onDestroy } from "svelte";
   import RouteList from "./lib/RouteList.svelte";
   import { guid } from "./utils";
+  import CurrentSession from "./lib/CurrentSession.svelte";
 
   let user = null;
   let userSession: Session = null;
@@ -44,10 +45,11 @@
         if (change.type === "added") {
           if (user) {
             console.log("user session");
+            sessionStore.set(change.doc.data());
           }
-          // console.log("New session: ", change.doc.data());
         }
         if (change.type === "modified") {
+          sessionStore.set(change.doc.data());
           console.log("Modified session: ", change.doc.data());
         }
         if (change.type === "removed") {
@@ -103,6 +105,7 @@
           uid: guid(),
           userUid: user.uid,
           date: today,
+          startedAt: new Date(),
           routes: [],
         });
 
@@ -153,6 +156,7 @@
       <NewRoute />
     </div>
     <RouteList />
+    <CurrentSession />
   {:else}
     <Login />
   {/if}

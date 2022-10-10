@@ -10,7 +10,7 @@
   } from "@fortawesome/free-solid-svg-icons";
   import { toTitleCase, getColor } from "../utils";
   import { slide } from "svelte/transition";
-  import { arrayUnion, doc, increment, updateDoc } from "firebase/firestore";
+  import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 
   let userSession: Session;
   let userRoutes: Array<Route> = [];
@@ -34,9 +34,11 @@
 
   const addRouteToSession = async (route: Route) => {
     if (routeValidator == 1) {
+      const newRoute = { ...route, climbedAt: new Date() };
       await updateDoc(doc(db, "sessions", userSession.uid), {
-        routes: arrayUnion({ ...route, climbedAt: new Date() }),
+        routes: arrayUnion(newRoute),
       });
+      sessionStore.set(userSession);
       routeValidator = 0;
     } else {
       routeValidator++;
