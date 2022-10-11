@@ -29,7 +29,6 @@ export class Session implements ISession {
       this.startedAt = startedAt;
     } else {
       const _startedAt = startedAt as Timestamp;
-      console.log(startedAt);
       this.startedAt = _startedAt.toDate();
     }
     this.routes = routes;
@@ -38,7 +37,6 @@ export class Session implements ISession {
 
 export const sessionConverter: FirestoreDataConverter<Session> = {
   toFirestore: (session: WithFieldValue<Session>) => {
-    console.log(`session.toFirestore: ${JSON.stringify(session)}`);
     return {
       uid: session.uid,
       userUid: session.userUid,

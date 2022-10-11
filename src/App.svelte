@@ -44,7 +44,7 @@
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           if (user) {
-            console.log("user session");
+            console.log("Added session");
             sessionStore.set(change.doc.data());
           }
         }
@@ -53,6 +53,7 @@
           console.log("Modified session: ", change.doc.data());
         }
         if (change.type === "removed") {
+          sessionStore.set(change.doc.data());
           console.log("Removed session: ", change.doc.data());
         }
       });

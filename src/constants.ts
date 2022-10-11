@@ -1,9 +1,3 @@
-const _BUTTON_BACKGROUND = (color) => {
-  const bg = `text-white bg-${color}-400 hover:bg-${color}-600 active:bg-${color}-700 focus:outline-none focus:ring focus:ring-${color}-600`;
-  console.log(color, bg);
-  return bg;
-};
-
 export const COLOR_MAP = {
   green: {
     background:

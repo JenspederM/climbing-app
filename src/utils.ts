@@ -22,7 +22,6 @@ export const getColor = (color: string) => {
   const lowerColor = color.toLowerCase();
   if (lowerColor in COLOR_MAP) {
     const color = COLOR_MAP[lowerColor].background;
-    console.log("background:", color);
     return color;
   } else {
     return "bg-white";

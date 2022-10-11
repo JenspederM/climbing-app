@@ -46,7 +46,7 @@
   };
 
   const filterRoutes = (route) => {
-    console.log(`Selected route type: ${routeType}`);
+    console.debug(`Selected route type: ${routeType}`);
     if (routeType === "All") {
       return true;
     } else if (routeType == "Other") {
@@ -57,7 +57,7 @@
   };
 
   const filterGrips = (route) => {
-    console.log(`Selected grip type: ${gripType}`);
+    console.debug(`Selected grip type: ${gripType}`);
     if (gripType === "All") {
       return true;
     } else if (gripType == "Other") {
@@ -68,7 +68,7 @@
   };
 
   const filterColors = (route) => {
-    console.log(`Selected color grade: ${gripType}`);
+    console.debug(`Selected color grade: ${gripType}`);
     if (colorGrade === "All") {
       return true;
     } else if (colorGrade) {
